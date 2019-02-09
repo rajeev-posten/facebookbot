@@ -2,7 +2,7 @@ var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 var request = require('request');
-//var sfdc = require('./salesforce'),
+var sfdc = require('./salesforce'),
         
 app.use(bodyParser.json());
 
@@ -39,7 +39,7 @@ app.post('/webhook/', function (req, res) {
                 text = "Yes I can. What can I do for you?";
             } else if(text === "Just create a dummy Case for me") {
                 text = "Okay.. creating";
-                callSalesforce();
+                //callSalesforce();
                 text = "Done. Please check";    
             }     
             sendTextMessage(sender, text);
