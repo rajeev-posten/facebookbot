@@ -32,7 +32,13 @@ app.post('/webhook/', function (req, res) {
             // Your Logic Replaces the following Line
             if(text === "Hi") {
                 text = "Hello there, how can I help you?";
-            }    
+            } else if(text === "How are you?") {
+                text = "I am good.";
+            } else if(text === "Can you talk to Salesforce?") {
+                text = "Yes I can. What can I do for you?";
+            } else if(text === "Just create a dummy Case for me") {
+                text = "Okay.. creating";
+            }     
             sendTextMessage(sender, text);
         }
     }
