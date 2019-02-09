@@ -80,10 +80,12 @@ app.post('/webhook/', function (req, res) {
             } else if(text === "Can you talk to Salesforce?") {
                 text = "Yes I can. What can I do for you?";
             } else if(text === "Just create a dummy Case for me") {
-                text = "Okay.. creating";
-                callSalesforce();
-                text = "Done. Please check";    
-            }     
+                createCaseSF();
+                text = "Done. Please login to Salesforce and verify.";    
+            } else if(text === "Also a dummy Account") {
+                //callSalesforce();
+                text = "Account created. Please login to Salesforce and verify.";    
+            }      
             sendTextMessage(sender, text);
         }
     }
@@ -111,15 +113,15 @@ function sendTextMessage(sender, text) {
     });
 }
 
-function callSalesforce() {
+function createCaseSF() {
         var headers = {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer 00D0o00000182NE!AQQAQBK2G0LHkaKo9rMIqB6bi6aJBR2OAyQw2LSdisFP_XGM4TWLBPiD1.GgTW6LCa39MPnlGz5PREEyNnGRt0yiT2ky7GQl'    
+            'Authorization': 'Bearer ' + process.env.SF_Session    
         }
 
         // Configure the request
         var options = {
-            url: 'https://demoorg2019-dev-ed.my.salesforce.com/services/data/v43.0/sobjects/Case/',
+            url: 'https://demoorg2019-dev-ed.my.salesforce.com/services/data/v43.0/sobjects/Case',
             method: 'POST',
             json: true,
             headers: headers,
