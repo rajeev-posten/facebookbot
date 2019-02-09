@@ -30,6 +30,9 @@ app.post('/webhook/', function (req, res) {
         if (event.message && event.message.text) {
             text = event.message.text;
             // Your Logic Replaces the following Line
+            if(text === "Hi") {
+                text = "Hello there, how can I help you?";
+            }    
             sendTextMessage(sender, "Text received, echo: "+ text.substring(0, 200));
         }
     }
