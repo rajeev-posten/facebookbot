@@ -2,7 +2,7 @@ var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 var request = require('request');
-var nforceapp = require('nforce');
+var nforce = require('nforce');
 //var sfdc = require('./salesforce'),
 
 SF_CLIENT_ID = process.env.SF_CLIENT_ID,
