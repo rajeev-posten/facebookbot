@@ -2,7 +2,7 @@ var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 var request = require('request');
-var sfdc = require('./modules/salesforce'),
+var sfdc = require('salesforce'),
         
 app.use(bodyParser.json());
 
