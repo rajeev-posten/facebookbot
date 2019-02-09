@@ -38,7 +38,8 @@ app.post('/webhook/', function (req, res) {
 
 function sendTextMessage(sender, text) {
     messageData = {
-        text:text
+        //text:text
+        "text": `You sent the message: "${text}". Now send me something else!`    
     }
     request({
         url: 'https://graph.facebook.com/v2.6/me/messages',
