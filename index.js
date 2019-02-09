@@ -39,6 +39,8 @@ app.post('/webhook/', function (req, res) {
                 text = "Yes I can. What can I do for you?";
             } else if(text === "Just create a dummy Case for me") {
                 text = "Okay.. creating";
+                sfdc.createCase("from fb bot","from fb bot","from fb bot");
+                text = "Done. Please check";    
             }     
             sendTextMessage(sender, text);
         }
