@@ -86,6 +86,7 @@ function callSalesforce() {
 
         // Start the request
         request(options, function (error, response, body) {
+            console.log('response SF ' + JSON.stringify(response));    
             if (!error && response.statusCode == 200) {
                 // Print out the response body
                 console.log(body)
