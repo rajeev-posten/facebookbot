@@ -2,7 +2,7 @@ var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 var request = require('request');
-var sfdc = require('./salesforce'),
+//var sfdc = require('./salesforce'),
         
 app.use(bodyParser.json());
 
@@ -39,7 +39,7 @@ app.post('/webhook/', function (req, res) {
                 text = "Yes I can. What can I do for you?";
             } else if(text === "Just create a dummy Case for me") {
                 text = "Okay.. creating";
-                sfdc.createCase();
+                callSalesforce();
                 text = "Done. Please check";    
             }     
             sendTextMessage(sender, text);
@@ -67,6 +67,30 @@ function sendTextMessage(sender, text) {
             console.log('Error: ', response.body.error);
         }
     });
+}
+
+function callSalesforce() {
+        // Set the headers
+        var headers = {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer 00D0o00000182NE!AQQAQBK2G0LHkaKo9rMIqB6bi6aJBR2OAyQw2LSdisFP_XGM4TWLBPiD1.GgTW6LCa39MPnlGz5PREEyNnGRt0yiT2ky7GQl'    
+        }
+
+        // Configure the request
+        var options = {
+            url: 'https://demoorg2019-dev-ed.my.salesforce.com/services/data/v43.0/sobjects/Case/',
+            method: 'POST',
+            headers: headers,
+            form: {"Subject" : "Facebook bot", "Origin" : "Web","Status" : "New"}
+        }
+
+        // Start the request
+        request(options, function (error, response, body) {
+            if (!error && response.statusCode == 200) {
+                // Print out the response body
+                console.log(body)
+            }
+        })
 }
 
 app.listen(app.get('port'), function() {
