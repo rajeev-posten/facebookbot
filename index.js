@@ -81,7 +81,7 @@ app.post('/webhook/', function (req, res) {
                 text = "Yes I can. What can I do for you?";
             } else if(text === "Just create a dummy Case for me") {
                 text = "Okay.. creating";
-                //callSalesforce();
+                login();
                 text = "Done. Please check";    
             }     
             sendTextMessage(sender, text);
