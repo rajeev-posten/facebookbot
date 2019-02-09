@@ -1,68 +1,62 @@
-'use strict'
+var express = require('express');
+var app = express();
+var bodyParser = require('body-parser');
+var request = require('request');
 
-const token = process.env.FB_PAGE_ACCESS_TOKEN
-const vtoken = process.env.FB_VERIFY_ACCESS_TOKEN
+app.use(bodyParser.json());
 
-const express = require('express')
-const bodyParser = require('body-parser')
-const request = require('request')
+app.set('port', (process.env.PORT || 5000));
+app.set('verify_token', (process.env.VERIFY_TOKEN || 'TEST'));
+app.set('page_access_token', (process.env.PAGE_ACCESS_TOKEN || 'NULL'));
 
-const app = express()
+app.get('/', function (req, res) {
+        res.send('It Works! Follow FB Instructions to activate.');
+});
 
-app.set('port', (process.env.PORT || 5000))
+app.get('/webhook', function (req, res) {
+    if (req.query['hub.verify_token'] === app.get('verify_token')) {
+        res.send(req.query['hub.challenge']);
+    } else {
+        res.send('Error, wrong validation token');
+    }
+});
 
-// Allows us to process the data
-app.use(bodyParser.urlencoded({extended: false}))
-app.use(bodyParser.json())
+app.post('/webhook/', function (req, res) {
+    console.log (req.body);
+    messaging_events = req.body.entry[0].messaging;
+    for (i = 0; i < messaging_events.length; i++) {
+        event = req.body.entry[0].messaging[i];
+        sender = event.sender.id;
+        if (event.message && event.message.text) {
+            text = event.message.text;
+            // Your Logic Replaces the following Line
+            sendTextMessage(sender, "Text received, echo: "+ text.substring(0, 200));
+        }
+    }
+    res.sendStatus(200);
+});
 
-// ROUTES
-
-app.get('/', function(req, res) {
-	res.send("Hi I am a chatbot")
-})
-
-
-// Facebook 
-
-app.get('/webhook/', function(req, res) {
-	if (req.query['hub.verify_token'] === vtoken) {
-		res.send(req.query['hub.challenge'])
-	}
-	res.send("Wrong token")
-})
-
-app.post('/webhook/', function(req, res) {
-	let messaging_events = req.body.entry[0].messaging
-	for (let i = 0; i < messaging_events.length; i++) {
-		let event = messaging_events[i]
-		let sender = event.sender.id
-		if (event.message && event.message.text) {
-			let text = event.message.text
-			sendText(sender, "Text echo: " + text.substring(0, 100))
-		}
-	}
-	res.sendStatus(200)
-})
-
-function sendText(sender, text) {
-	let messageData = {text: text}
-	request({
-		url: "https://graph.facebook.com/v2.6/me/messages",
-		qs : {access_token: token},
-		method: "POST",
-		json: {
-			recipient: {id: sender},
-			message : messageData,
-		}
-	}, function(error, response, body) {
-		if (error) {
-			console.log("sending error")
-		} else if (response.body.error) {
-			console.log("response body error")
-		}
-	})
+function sendTextMessage(sender, text) {
+    messageData = {
+        text:text
+    }
+    request({
+        url: 'https://graph.facebook.com/v2.6/me/messages',
+        qs: {access_token:app.get('page_access_token')},
+        method: 'POST',
+        json: {
+            recipient: {id:sender},
+            message: messageData,
+        }
+    }, function(error, response, body) {
+        if (error) {
+            console.log('Error sending message: ', error);
+        } else if (response.body.error) {
+            console.log('Error: ', response.body.error);
+        }
+    });
 }
 
 app.listen(app.get('port'), function() {
-	console.log("running: port")
-})
+    console.log('Node app is running on port', app.get('port'));
+});

@@ -1,23 +1,30 @@
 {
-  "name": "messenger-quick-start",
-  "version": "1.0.0",
-  "description": "An example webhook for Facebook Messenger quick start tutorial.",
-  "main": "app.js",
+  "name": "facebook-messenger-bot-webhook",
+  "version": "0.1.0",
+  "description": "A sample Facebook Messenger Bot Webhook Listener",
+  "main": "index.js",
   "scripts": {
-    "start": "node app.js"
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "body-parser": "1.15.0",
+    "ejs": "2.3.3",
+    "express": "4.13.3",
+    "request": "2.71.0"
+  },
+  "engines": {
+    "node": "0.12.7"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/fbsamples/messenger-platform-samples.git"
+    "url": "https://github.com/culturekings/facebook-messenger-bot-webhook"
   },
-  "author": "Facebook",
-  "license": "ISC",
-  "dependencies": {
-    "body-parser": "^1.15.0",
-    "express": "^4.13.4",
-    "request": "^2.72.0"
-  },
-  "engines": {
-    "node": "~4.1.2"
-  }
+  "keywords": [
+    "node",
+    "heroku",
+    "express",
+    "facebook",
+    "messenger"
+  ],
+  "license": "MIT"
 }
