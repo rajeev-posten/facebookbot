@@ -81,7 +81,7 @@ app.post('/webhook/', function (req, res) {
                 text = "Yes I can. What can I do for you?";
             } else if(text === "Just create a dummy Case for me") {
                 text = "Okay.. creating";
-                login();
+                callSalesforce();
                 text = "Done. Please check";    
             }     
             sendTextMessage(sender, text);
@@ -112,7 +112,6 @@ function sendTextMessage(sender, text) {
 }
 
 function callSalesforce() {
-        // Set the headers
         var headers = {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer 00D0o00000182NE!AQQAQBK2G0LHkaKo9rMIqB6bi6aJBR2OAyQw2LSdisFP_XGM4TWLBPiD1.GgTW6LCa39MPnlGz5PREEyNnGRt0yiT2ky7GQl'    
@@ -122,8 +121,9 @@ function callSalesforce() {
         var options = {
             url: 'https://demoorg2019-dev-ed.my.salesforce.com/services/data/v43.0/sobjects/Case/',
             method: 'POST',
+            json: true,
             headers: headers,
-            form: {"Subject" : "Facebook bot", "Origin" : "Web","Status" : "New"}
+            body: {"Subject" : "Facebook bot", "Origin" : "Web","Status" : "New"}
         }
 
         // Start the request
@@ -133,7 +133,7 @@ function callSalesforce() {
                 // Print out the response body
                 console.log(body)
             }
-        })
+        });
 }
 
 app.listen(app.get('port'), function() {
