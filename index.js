@@ -83,8 +83,10 @@ app.post('/webhook/', function (req, res) {
                 createCaseSF();
                 text = "Done. Please login to Salesforce and verify.";    
             } else if(text === "Also create a dummy Account") {
-                //callSalesforce();
+                createAccountSF();
                 text = "Account created. Please login to Salesforce and verify.";    
+            } else if(text === "Thank you") {
+                text = "You are welcome dear. Have a nice day !";
             }      
             sendTextMessage(sender, text);
         }
