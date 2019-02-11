@@ -3,7 +3,7 @@ var app = express();
 var bodyParser = require('body-parser');
 var request = require('request');
 var nforce = require('nforce');
-var messenger = require('./modules/messenger'),
+//var messenger = require('./modules/messenger'),
 
 SF_CLIENT_ID = process.env.SF_CLIENT_ID,
 SF_CLIENT_SECRET = process.env.SF_CLIENT_SECRET,
@@ -87,7 +87,7 @@ app.post('/webhook/', function (req, res) {
                 text = "Account created. Please login to Salesforce and verify.";    
             } else if(text === "Thank you") {
                 text = "You are welcome dear. Have a nice day !";
-                messenger.send({text: "It was nice talking to you"}, sender);
+                sendTextMessage(sender, 'It was nice talking to you');
             }      
             sendTextMessage(sender, text);
         }
