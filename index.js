@@ -82,7 +82,7 @@ app.post('/webhook/', function (req, res) {
             } else if(text === "Just create a dummy Case for me") {
                 createCaseSF();
                 text = "Done. Please login to Salesforce and verify.";    
-            } else if(text === "Also a dummy Account") {
+            } else if(text === "Also create a dummy Account") {
                 //callSalesforce();
                 text = "Account created. Please login to Salesforce and verify.";    
             }      
@@ -126,6 +126,31 @@ function createCaseSF() {
             json: true,
             headers: headers,
             body: {"Subject" : "Facebook bot", "Origin" : "Web","Status" : "New"}
+        }
+
+        // Start the request
+        request(options, function (error, response, body) {
+            console.log('response SF ' + JSON.stringify(response));    
+            if (!error && response.statusCode == 200) {
+                // Print out the response body
+                console.log(body)
+            }
+        });
+}
+
+function createAccountSF() {
+        var headers = {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + process.env.SF_Session    
+        }
+
+        // Configure the request
+        var options = {
+            url: 'https://demoorg2019-dev-ed.my.salesforce.com/services/data/v43.0/sobjects/Account',
+            method: 'POST',
+            json: true,
+            headers: headers,
+            body: {"Name" : "Facebook bot Account"}
         }
 
         // Start the request
